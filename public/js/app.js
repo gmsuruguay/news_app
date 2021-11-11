@@ -2204,41 +2204,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'New',
   data: function data() {
     return {
-      news: []
+      news: [],
+      idsFavoriteNews: []
     };
   },
   components: {},
   created: function created() {
+    this.getIdsFavoriteNews();
     this.getNews();
   },
   methods: {
-    getNews: function getNews() {
+    getIdsFavoriteNews: function getIdsFavoriteNews() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var response, data;
+        var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return axios.get('https://hacker-news.firebaseio.com/v0/newstories.json');
+                return axios.get('/favorites');
 
               case 3:
                 response = _context.sent;
-                data = response.data;
-                data.slice(0, 10).forEach(function (id) {
-                  axios.get('https://hacker-news.firebaseio.com/v0/item/' + id + '.json').then(function (resp) {
-                    return _this.news.push(resp);
-                  })["catch"](function (err) {
-                    return console.log(err);
-                  });
+                _this.idsFavoriteNews = response.data.map(function (data) {
+                  return data.id_new;
                 });
+                console.log(_this.idsFavoriteNews);
                 _context.next = 11;
                 break;
 
@@ -2255,13 +2255,65 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee, null, [[0, 8]]);
       }))();
     },
+    getNews: function getNews() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var response, data, lastNews;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return axios.get('https://hacker-news.firebaseio.com/v0/newstories.json');
+
+              case 3:
+                response = _context2.sent;
+                data = response.data; // Excluir noticias agregadas en favoritas
+
+                data = data.filter(function (id) {
+                  return !_this2.idsFavoriteNews.includes(id);
+                }); // Mostrar las ultimas 10 noticias
+
+                lastNews = [];
+                data.slice(0, 10).forEach(function (id) {
+                  axios.get('https://hacker-news.firebaseio.com/v0/item/' + id + '.json').then(function (resp) {
+                    lastNews.push(resp);
+                    _this2.news = lastNews;
+                  })["catch"](function (err) {
+                    return console.log(err);
+                  });
+                });
+                _context2.next = 13;
+                break;
+
+              case 10:
+                _context2.prev = 10;
+                _context2.t0 = _context2["catch"](0);
+                console.error(_context2.t0);
+
+              case 13:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 10]]);
+      }))();
+    },
     addFavorite: function addFavorite(data) {
+      var _this3 = this;
+
       axios.post('/favorites', {
         id: data.id,
         title: data.title,
         url: data.url
       }).then(function (response) {
         console.log(response);
+
+        _this3.getIdsFavoriteNews();
+
+        _this3.getNews();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -38662,8 +38714,10 @@ var render = function () {
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.news, function (data) {
-          return _c("tr", { key: data.data.id }, [
+        _vm._l(_vm.news, function (data, index) {
+          return _c("tr", { key: index }, [
+            _c("td", [_vm._v(_vm._s(index + 1))]),
+            _vm._v(" "),
             _c("td", [_vm._v(_vm._s(data.data.title))]),
             _vm._v(" "),
             _c("td", [
@@ -38693,7 +38747,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("thead", [
-      _c("tr", [_c("th", [_vm._v("Nombre")]), _vm._v(" "), _c("th")]),
+      _c("tr", [
+        _c("th", [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nombre")]),
+        _vm._v(" "),
+        _c("th"),
+      ]),
     ])
   },
 ]
