@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Favorite extends Model
 {
+    const IS_DELETED = 1;
+    
     use HasFactory;
     protected $fillable = [
         'title',

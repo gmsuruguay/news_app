@@ -15,7 +15,7 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        return Favorite::get();
+        return Favorite::where('id_user', Auth::id())->where('is_deleted','<>',Favorite::IS_DELETED)->get();
     }
 
     /**
@@ -41,11 +41,14 @@ class FavoriteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Favorite  $favorite
+     * @param  integer $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Favorite $favorite)
+    public function destroy($id)
     {
-        //
+        $new = Favorite::find($id);
+        $new->is_deleted = 1;
+        $new->update();
+       
     }
 }

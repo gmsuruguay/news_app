@@ -1,6 +1,5 @@
 <template>
-  <div class="new">
-    <h3>Ultimas noticias</h3>    
+  <div class="new">    
     <table class="table table-striped table-hover">
         <thead>
             <tr>

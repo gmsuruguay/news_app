@@ -25,4 +25,14 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    /**
+     * Show the page favorite news.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function favorite()
+    {
+        return view('favorite');
+    }
 }
