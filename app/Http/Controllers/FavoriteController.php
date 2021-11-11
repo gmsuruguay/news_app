@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Favorite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
@@ -14,7 +15,7 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        //
+        return Favorite::get();
     }
 
     /**
@@ -25,31 +26,17 @@ class FavoriteController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+       
+        $favorite = new Favorite();
+        $favorite->id_new = $request->id;
+        $favorite->title = $request->title;
+        $favorite->url = $request->url;
+        $favorite->is_deleted = 0;
+        $favorite->id_user = Auth::id();
+        $favorite->save();
+        return response($favorite,201);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Favorite  $favorite
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Favorite $favorite)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Favorite  $favorite
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Favorite $favorite)
-    {
-        //
-    }
+    }    
 
     /**
      * Remove the specified resource from storage.
