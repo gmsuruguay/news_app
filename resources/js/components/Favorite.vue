@@ -47,15 +47,27 @@ export default {
     },
 
     deleteFavorite(id){
-            
-        axios.delete('/favorites/' + id)
-        .then(response => {
-            console.log(response);
-            this.getFavoriteNews()
-        })
-        .catch(error => {
-            console.log(error);
-        });
+        Swal.fire({
+          title: 'Esta seguro eliminar esta noticia?',         
+          showCancelButton: true,
+          confirmButtonText: 'Si',
+          cancelButtonText: `No`,
+        }).then((result) => {
+          
+          if (result.isConfirmed) {
+            axios.delete('/favorites/' + id)
+            .then(response => {
+                console.log(response);
+                Swal.fire('Noticia eliminada!', '', 'success')
+                this.getFavoriteNews()
+            })
+            .catch(error => {
+                console.log(error);
+            }); 
+
+           
+          } 
+        })       
 
     }
   }

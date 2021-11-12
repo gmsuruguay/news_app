@@ -2153,12 +2153,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteFavorite: function deleteFavorite(id) {
       var _this2 = this;
 
-      axios["delete"]('/favorites/' + id).then(function (response) {
-        console.log(response);
+      Swal.fire({
+        title: 'Esta seguro eliminar esta noticia?',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: "No"
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios["delete"]('/favorites/' + id).then(function (response) {
+            console.log(response);
+            Swal.fire('Noticia eliminada!', '', 'success');
 
-        _this2.getFavoriteNews();
-      })["catch"](function (error) {
-        console.log(error);
+            _this2.getFavoriteNews();
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        }
       });
     }
   }
