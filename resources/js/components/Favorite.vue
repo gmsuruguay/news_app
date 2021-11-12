@@ -11,8 +11,8 @@
         <tbody>
             <tr v-for="data in news" :key="data.id">
                 <td>{{data.title}}</td>
-                <td><a :href="data.url">url</a></td>
-                <td><button class="btn btn-danger" @click="deleteFavorite(data.id)">Eliminar</button></td>
+                <td><a target="_blank" :href="data.url"><i class="fas fa-link"></i></a></td>
+                <td><button class="btn btn-danger" @click="deleteFavorite(data.id)"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
             </tr>
         </tbody>
     </table>

@@ -12,7 +12,7 @@
             <tr v-for="(data,index) in news" :key="index">
                 <td>{{index + 1}}</td>
                 <td>{{data.data.title}}</td>
-                <td><button class="btn btn-primary" @click="addFavorite(data.data)">Favorito</button></td>
+                <td><button  @click="addFavorite(data.data)" class="btn btn-success"><i class="fas fa-star fa-1x"></i> Favorito</button></td>
             </tr>
         </tbody>
     </table>
@@ -26,7 +26,7 @@ export default {
   data(){
     return {
       news : [],
-      idsFavoriteNews: []
+      idsFavoriteNews: []     
     }
   },
   components: {
@@ -93,3 +93,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>
