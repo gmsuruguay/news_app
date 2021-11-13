@@ -3,16 +3,15 @@
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Link</th>
+                <th>Nombre</th>                
                 <th></th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="data in news" :key="data.id">
                 <td>{{data.title}}</td>
-                <td><a target="_blank" :href="data.url"><i class="fas fa-link"></i></a></td>
-                <td><button class="btn btn-danger" @click="deleteFavorite(data.id)"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
+                <td><a target="_blank" :href="data.url"><i class="fas fa-link fa-lg" title="Ver noticia"></i></a>
+                <i @click="deleteFavorite(data.id)" class="fas fa-trash-alt text-danger link-active fa-lg" title="Eliminar"></i></td>
             </tr>
         </tbody>
     </table>
@@ -73,3 +72,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.link-active:hover{
+    cursor: pointer;
+ }
+</style>

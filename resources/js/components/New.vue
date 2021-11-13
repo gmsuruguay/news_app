@@ -12,7 +12,7 @@
             <tr v-for="(data,index) in news" :key="index">
                 <td>{{index + 1}}</td>
                 <td>{{data.data.title}}</td>
-                <td><button  @click="addFavorite(data.data)" class="btn btn-success"><i class="fas fa-star fa-1x"></i> Favorito</button></td>
+                <td><i @click="addFavorite(data.data)" class="far fa-star fa-lg active link-active" :class="{'fas fa-star':(active === index + 1 )}" @mouseover="setActive(index + 1)" @mouseout="setActive('')" title="Agregar a favoritos"></i></td>
             </tr>
         </tbody>
     </table>
@@ -26,7 +26,8 @@ export default {
   data(){
     return {
       news : [],
-      idsFavoriteNews: []     
+      idsFavoriteNews: [],
+      active : ''    
     }
   },
   components: {
@@ -82,6 +83,11 @@ export default {
         })
         .then(response => {
             console.log(response);
+            Swal.fire(
+              'Correcto',
+              'Noticia agregada a favoritos!',
+              'success'
+            )
             this.getIdsFavoriteNews()
             this.getNews()
         })
@@ -89,11 +95,22 @@ export default {
             console.log(error);
         });
 
+    },
+
+    setActive(value){
+      this.active = value
     }
+
   }
 }
 </script>
 
 <style scoped>
+.active{
+  color: gold; 
+}
 
+.link-active:hover{
+    cursor: pointer;
+ }
 </style>
