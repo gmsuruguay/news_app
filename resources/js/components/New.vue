@@ -1,6 +1,11 @@
 <template>
   <div class="new">    
-    <table class="table table-striped table-hover">
+    <div v-if="showSpinner" class="text-center">
+    <div  class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    </div>
+    <table v-else class="table table-striped table-hover">
         <thead>
             <tr>
                 <th>#</th>
@@ -27,13 +32,15 @@ export default {
     return {
       news : [],
       idsFavoriteNews: [],
-      active : ''    
+      active : '' ,
+      showSpinner : false  
     }
   },
   components: {
     
   },
   created(){
+    this.showSpinner = true
     this.getIdsFavoriteNews()
     this.getNews()
   },
@@ -64,6 +71,7 @@ export default {
             .then(resp => {
               lastNews.push(resp) 
               this.news = lastNews
+              this.showSpinner = false
             })
             .catch( err => console.log(err))
         })

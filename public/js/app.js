@@ -2104,15 +2104,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Favorite',
   data: function data() {
     return {
-      news: []
+      news: [],
+      showSpinner: false
     };
   },
   components: {},
   created: function created() {
+    this.showSpinner = true;
     this.getFavoriteNews();
   },
   methods: {
@@ -2133,20 +2142,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 response = _context.sent;
                 console.log(response);
                 _this.news = response.data;
-                _context.next = 11;
+                _this.showSpinner = false;
+                _context.next = 12;
                 break;
 
-              case 8:
-                _context.prev = 8;
+              case 9:
+                _context.prev = 9;
                 _context.t0 = _context["catch"](0);
                 console.error(_context.t0);
 
-              case 11:
+              case 12:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 8]]);
+        }, _callee, null, [[0, 9]]);
       }))();
     },
     deleteFavorite: function deleteFavorite(id) {
@@ -2215,17 +2225,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'New',
   data: function data() {
     return {
       news: [],
       idsFavoriteNews: [],
-      active: ''
+      active: '',
+      showSpinner: false
     };
   },
   components: {},
   created: function created() {
+    this.showSpinner = true;
     this.getIdsFavoriteNews();
     this.getNews();
   },
@@ -2291,6 +2308,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   axios.get('https://hacker-news.firebaseio.com/v0/item/' + id + '.json').then(function (resp) {
                     lastNews.push(resp);
                     _this2.news = lastNews;
+                    _this2.showSpinner = false;
                   })["catch"](function (err) {
                     return console.log(err);
                   });
@@ -39144,42 +39162,63 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "new" }, [
-    _c("table", { staticClass: "table table-striped table-hover" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "tbody",
-        _vm._l(_vm.news, function (data) {
-          return _c("tr", { key: data.id }, [
-            _c("td", [_vm._v(_vm._s(data.title))]),
-            _vm._v(" "),
-            _c("td", [
-              _c("a", { attrs: { target: "_blank", href: data.url } }, [
-                _c("i", {
-                  staticClass: "fas fa-link fa-lg",
-                  attrs: { title: "Ver noticia" },
-                }),
-              ]),
-              _vm._v(" "),
-              _c("i", {
-                staticClass: "fas fa-trash-alt text-danger link-active fa-lg",
-                attrs: { title: "Eliminar" },
-                on: {
-                  click: function ($event) {
-                    return _vm.deleteFavorite(data.id)
-                  },
-                },
-              }),
-            ]),
-          ])
-        }),
-        0
-      ),
-    ]),
+  return _c("div", { staticClass: "favorite" }, [
+    _vm.showSpinner
+      ? _c("div", { staticClass: "text-center" }, [_vm._m(0)])
+      : _vm.news.length > 0 && _vm.showSpinner == false
+      ? _c("table", { staticClass: "table table-striped table-hover" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.news, function (data) {
+              return _c("tr", { key: data.id }, [
+                _c("td", [_vm._v(_vm._s(data.title))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("a", { attrs: { target: "_blank", href: data.url } }, [
+                    _c("i", {
+                      staticClass: "fas fa-link fa-lg",
+                      attrs: { title: "Ver noticia" },
+                    }),
+                  ]),
+                  _vm._v(" "),
+                  _c("i", {
+                    staticClass:
+                      "fas fa-trash-alt text-danger link-active fa-lg",
+                    attrs: { title: "Eliminar" },
+                    on: {
+                      click: function ($event) {
+                        return _vm.deleteFavorite(data.id)
+                      },
+                    },
+                  }),
+                ]),
+              ])
+            }),
+            0
+          ),
+        ])
+      : _c("p", { staticClass: "text-center text-muted" }, [
+          _vm._v("No se encontraron registros"),
+        ]),
   ])
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "spinner-border text-primary",
+        staticStyle: { width: "3rem", height: "3rem" },
+        attrs: { role: "status" },
+      },
+      [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
+    )
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -39212,43 +39251,59 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "new" }, [
-    _c("table", { staticClass: "table table-striped table-hover" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "tbody",
-        _vm._l(_vm.news, function (data, index) {
-          return _c("tr", { key: index }, [
-            _c("td", [_vm._v(_vm._s(index + 1))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(data.data.title))]),
-            _vm._v(" "),
-            _c("td", [
-              _c("i", {
-                staticClass: "far fa-star fa-lg active link-active",
-                class: { "fas fa-star": _vm.active === index + 1 },
-                attrs: { title: "Agregar a favoritos" },
-                on: {
-                  click: function ($event) {
-                    return _vm.addFavorite(data.data)
-                  },
-                  mouseover: function ($event) {
-                    return _vm.setActive(index + 1)
-                  },
-                  mouseout: function ($event) {
-                    return _vm.setActive("")
-                  },
-                },
-              }),
-            ]),
-          ])
-        }),
-        0
-      ),
-    ]),
+    _vm.showSpinner
+      ? _c("div", { staticClass: "text-center" }, [_vm._m(0)])
+      : _c("table", { staticClass: "table table-striped table-hover" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.news, function (data, index) {
+              return _c("tr", { key: index }, [
+                _c("td", [_vm._v(_vm._s(index + 1))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(data.data.title))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("i", {
+                    staticClass: "far fa-star fa-lg active link-active",
+                    class: { "fas fa-star": _vm.active === index + 1 },
+                    attrs: { title: "Agregar a favoritos" },
+                    on: {
+                      click: function ($event) {
+                        return _vm.addFavorite(data.data)
+                      },
+                      mouseover: function ($event) {
+                        return _vm.setActive(index + 1)
+                      },
+                      mouseout: function ($event) {
+                        return _vm.setActive("")
+                      },
+                    },
+                  }),
+                ]),
+              ])
+            }),
+            0
+          ),
+        ]),
   ])
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "spinner-border text-primary",
+        staticStyle: { width: "3rem", height: "3rem" },
+        attrs: { role: "status" },
+      },
+      [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
+    )
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement

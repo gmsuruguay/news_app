@@ -1,6 +1,12 @@
 <template>
-  <div class="new">    
-    <table class="table table-striped table-hover">
+  <div class="favorite">  
+    
+    <div v-if="showSpinner" class="text-center">
+    <div  class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    </div>
+    <table v-else-if="news.length > 0 && showSpinner == false" class="table table-striped table-hover">
         <thead>
             <tr>
                 <th>Nombre</th>                
@@ -15,6 +21,7 @@
             </tr>
         </tbody>
     </table>
+    <p v-else class="text-center text-muted">No se encontraron registros</p>
   </div>
 </template>
 
@@ -24,13 +31,15 @@ export default {
   name: 'Favorite',
   data(){
     return {
-      news : []
+      news : [],
+      showSpinner : false
     }
   },
   components: {
     
   },
   created(){
+    this.showSpinner = true
     this.getFavoriteNews()
   },
   methods:{
@@ -40,6 +49,7 @@ export default {
         const response = await axios.get('/favorites');
         console.log(response)          
         this.news = response.data
+        this.showSpinner = false
       } catch (error) {
         console.error(error);
       }
